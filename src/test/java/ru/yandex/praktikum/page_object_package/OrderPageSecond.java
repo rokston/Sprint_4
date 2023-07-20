@@ -1,17 +1,15 @@
-package ru.yandex.praktikum.PageObjectPackage;
+package ru.yandex.praktikum.page_object_package;
 import org.hamcrest.MatcherAssert;
 import org.openqa.selenium.*;
-
-import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertEquals;
 
 
 // Класс второй страницы заказа
-public class OrderPage2 {
+public class OrderPageSecond {
     private WebDriver driver;
-    private By pageTitle = By.cssSelector(".Order_Header__BZXOb"); //заголовок "Про аренду"
+    private static By pageTitle = By.cssSelector(".Order_Header__BZXOb"); //заголовок "Про аренду"
     private By fieldDate = By.xpath(".//div/input[@placeholder = '* Когда привезти самокат']");//поле Дата
     //поле Срок аренды
     private By fieldPeriod = By.xpath(".//div/div[@class = 'Dropdown-placeholder' and text() = '* Срок аренды']");
@@ -26,8 +24,10 @@ public class OrderPage2 {
     private By buttonYes = By.xpath(".//div[@class='Order_Modal__YZ-d3']/div[@class='Order_Buttons__1xGrp']/button[text()='Да']");
     //кнопка "Нет"
     private By buttonNo = By.xpath(".//div[@class ='Order_Modal__YZ-d3']/div[@class='Order_Buttons__1xGrp']/button[text()='Нет']");
+    private static By popupOrderFinishHeader = By.xpath(".//div[@class = 'Order_Modal__YZ-d3']/div[@class = 'Order_ModalHeader__3FDaJ']"); //заголовок попап окна после оформления заказа
 
-    public OrderPage2(WebDriver driver){
+
+    public OrderPageSecond(WebDriver driver){
         this.driver = driver;
     }
 
@@ -35,10 +35,6 @@ public class OrderPage2 {
         driver.findElement(fieldDate).click(); //кликнуть на поле даты для выпадения календаря
         driver.findElement(fieldDate).sendKeys(date); //вставить строку
         driver.findElement(fieldDate).sendKeys(Keys.ENTER); //нажать Enter
-
-        //проверяем, что в поле даты выставился нужный текст
-        String testMessage = driver.findElement(fieldDate).getAttribute("value");
-        assertEquals("должна быть найдена дата", date, testMessage);
 
     }
 
@@ -52,9 +48,6 @@ public class OrderPage2 {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
 
         driver.findElement(periodValue).click();//кликаем на нужный период
-
-        String testMessage = driver.findElement(fieldPeriodSelected).getText();//проверяем, что выставилось нужное
-        assertEquals(" должен быть найден срок аренды", period, testMessage);
 
     }
 
@@ -81,14 +74,25 @@ public class OrderPage2 {
         driver.findElement(buttonBack).click();
     }
 
-    public void clickButtonYes(){ //кликаем кнопку подтверждения заказа и проверяем, что появилось сообщение с "Заказ оформлен"
+    public void clickButtonYes(){ //кликаем кнопку подтверждения заказа
         driver.findElement(buttonYes).click();
-        String tempString =
-                driver.findElement(By.xpath(".//div[@class = 'Order_Modal__YZ-d3']/div[@class = 'Order_ModalHeader__3FDaJ']")).getText();
-        MatcherAssert.assertThat(tempString, startsWith("Заказ оформлен"));
-    }
+        /*  String tempString =
+                driver.findElement(popupOrderFinishHeader).getText();
+        MatcherAssert.assertThat(tempString, startsWith("Заказ оформлен"));// проверяем, что появилось сообщение об успешном заказе
+   */ }
     public void clickButtonNo(){ //нажимаем кнопку отмены заказа
         driver.findElement(buttonNo).click();
+    }
+
+    public static By getPageTitle() { //получить заголовок страницы
+        return pageTitle;
+    }
+
+    public static By getPopupOrderFinishHeader()
+    {
+       return popupOrderFinishHeader;
+
+
     }
 
 }

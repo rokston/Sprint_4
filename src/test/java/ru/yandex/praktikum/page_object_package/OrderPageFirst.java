@@ -1,20 +1,20 @@
-package ru.yandex.praktikum.PageObjectPackage;
+package ru.yandex.praktikum.page_object_package;
 import org.openqa.selenium.*;
-import static org.junit.Assert.assertEquals;
+
 
 
 
 // Класс первой страницы заказа
-public class OrderPage1 {
+public class OrderPageFirst {
     private WebDriver driver;
-    private By pageTitle = By.cssSelector(".Order_Header__BZXOb"); //заголовок "Для кого самокат"
+    private static By pageTitle = By.cssSelector(".Order_Header__BZXOb"); //заголовок "Для кого самокат"
     private By fieldName = By.xpath(".//div/input[@placeholder = '* Имя']"); //поле Имя
     private By fieldSurname = By.xpath(".//div/input[@placeholder = '* Фамилия']"); //поле Фамилия
     private By fieldAddress = By.xpath(".//div/input[@placeholder = '* Адрес: куда привезти заказ']"); //поле Адрес
     private By fieldStation = By.xpath(".//div/input[@placeholder ='* Станция метро']"); // поле Станция метро
     private By fieldPhone = By.xpath(".//div/input[@placeholder = '* Телефон: на него позвонит курьер']"); // поле Телефон
     private By buttonNext = By.xpath(".//button[@class = 'Button_Button__ra12g Button_Middle__1CSJM']"); // кнопка "Далее"
-    public OrderPage1(WebDriver driver){
+    public OrderPageFirst(WebDriver driver){
         this.driver = driver;
     }
 
@@ -38,9 +38,6 @@ public class OrderPage1 {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
         //кликаем на кнопку станции
         driver.findElement(stationName).click();
-        //проверяем, что в поле станции выставился нужный текст
-        String testMessage = driver.findElement(fieldStation).getAttribute("value");
-        assertEquals("должно быть найдено название станции", station, testMessage);
 
     }
 
@@ -48,4 +45,9 @@ public class OrderPage1 {
         driver.findElement(buttonNext).click();
     }
 
+
+
+    public static By getPageTitle() {
+        return pageTitle;
+    }
 }
